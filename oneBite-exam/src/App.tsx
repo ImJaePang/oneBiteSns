@@ -32,10 +32,11 @@ function App() {
       <div className="border-l-3-red m-5">border-x</div>
 
       {/* 6. 플렉스 컨테이너 flex */}
-      <div className="flex">
-        <div className="w-10 border">1</div>
-        <div className="w-10 border">2</div>
-        <div className="w-10 border">3</div>
+      <div className="flex flex-row items-start justify-around">
+        <div className="h-10 w-10 border">1</div>
+        <div className="h-20 w-10 flex-1 border">2</div>
+        <div className="h-30 w-10 border">3</div>
+        <div className="h-40 w-10 border">4</div>
       </div>
     </div>
   );
