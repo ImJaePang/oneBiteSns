@@ -1,8 +1,26 @@
 import "./App.css";
+import { Button } from "./components/ui/button";
+import { cn } from "./lib/utils";
 
 function App() {
+  const isActive = true;
+
   return (
     <div>
+      <div>
+        <Button>shadcn 버튼</Button>
+
+        <div className={cn(isActive ? "text-green-500" : "text-red-500")}>
+          isActive
+        </div>
+
+        <div className="text-primary">Primary</div>
+        <div className="text-muted">Muted</div>
+        <div className="text-destructive">Destructive</div>
+      </div>
+
+      <hr />
+
       {/* 1.타이포그래피 typography */}
       <div className="text-xs text-red-500">text-xs</div>
       <div className="text-sm text-[rgb(100,30,20)]">text-sm</div>
