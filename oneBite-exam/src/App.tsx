@@ -23,6 +23,20 @@ function App() {
       <div className="m-5 h-50 w-50 bg-red-400 px-5">
         <div className="h-full w-full bg-blue-500"></div>
       </div>
+
+      {/* 5. 보더 border */}
+      <div className="border border-red-500">border</div>
+      <div className="m-5 rounded-2xl border-2 p-5">border-2</div>
+      <div className="m-5 border-x">border-x</div>
+      <div className="m-5 border-y-2">border-x</div>
+      <div className="border-l-3-red m-5">border-x</div>
+
+      {/* 6. 플렉스 컨테이너 flex */}
+      <div className="flex">
+        <div className="w-10 border">1</div>
+        <div className="w-10 border">2</div>
+        <div className="w-10 border">3</div>
+      </div>
     </div>
   );
 }
