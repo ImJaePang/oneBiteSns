@@ -1,5 +1,9 @@
+import { toast } from "sonner";
 import "./App.css";
 import { Button } from "./components/ui/button";
+import { Input } from "./components/ui/input";
+import { Toaster } from "./components/ui/sonner";
+import { Textarea } from "./components/ui/textarea";
 import { cn } from "./lib/utils";
 
 function App() {
@@ -7,8 +11,36 @@ function App() {
 
   return (
     <div>
-      <div>
-        <Button>shadcn 버튼</Button>
+      {/* shadcn 소너 */}
+      <Toaster />
+      <div className="p-5">
+        <div>
+          {/* shadcn 버튼 */}
+          <Button
+            onClick={() => {
+              toast("토스트 메세지", {
+                position: "top-center",
+              });
+            }}
+          >
+            toast-sonner 버튼
+          </Button>
+          <Button variant={"destructive"}>shadcndestructive 버튼</Button>
+          <Button variant={"ghost"}>shadcn_ghost 버튼</Button>
+          <Button variant={"link"}>shadcn_link 버튼</Button>
+          <Button variant={"outline"}>shadcn_outline 버튼</Button>
+          <Button variant={"secondary"}>shadcn_secondary 버튼</Button>
+        </div>
+
+        <div>
+          {/*shadcn 인풋 */}
+          <Input placeholder="shadcn 인풋" />
+        </div>
+
+        <div>
+          {/* shadcn 텍스트 에리어 */}
+          <Textarea placeholder="shadcn 텍스트 에리어" />
+        </div>
 
         <div className={cn(isActive ? "text-green-500" : "text-red-500")}>
           isActive
