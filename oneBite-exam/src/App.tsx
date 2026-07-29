@@ -5,6 +5,26 @@ import { Input } from "./components/ui/input";
 import { Toaster } from "./components/ui/sonner";
 import { Textarea } from "./components/ui/textarea";
 import { cn } from "./lib/utils";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "./components/ui/carousel";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "./components/ui/popover";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./components/ui/dialog";
 
 function App() {
   const isActive = true;
@@ -31,21 +51,57 @@ function App() {
           <Button variant={"outline"}>shadcn_outline 버튼</Button>
           <Button variant={"secondary"}>shadcn_secondary 버튼</Button>
         </div>
-
         <div>
           {/*shadcn 인풋 */}
           <Input placeholder="shadcn 인풋" />
         </div>
-
         <div>
           {/* shadcn 텍스트 에리어 */}
           <Textarea placeholder="shadcn 텍스트 에리어" />
         </div>
-
+        <div>
+          {/* shadcn carousel 캐로셀 */}
+          캐로셀 시작
+          <Carousel className="mx-10">
+            <CarouselContent>
+              <CarouselItem className="basis-1/3 text-center">1</CarouselItem>
+              <CarouselItem className="basis-1/3 text-center">2</CarouselItem>
+              <CarouselItem className="basis-1/3 text-center">3</CarouselItem>
+              <CarouselItem className="basis-1/3 text-center">4</CarouselItem>
+              <CarouselItem className="basis-1/3 text-center">5</CarouselItem>
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+          캐로셀 끝
+        </div>
+        {/* shadcn 팝오버 */}
+        팝오버
+        <div>
+          <Popover>
+            {/* @ts-expect-error : 타입스크립트가 이상하게 잡아서 */}
+            <PopoverTrigger asChild>
+              <Button>Open</Button>
+            </PopoverTrigger>
+            <PopoverContent>content</PopoverContent>
+          </Popover>
+        </div>
+        <div>
+          {/* shadcn 다이얼로그 */}
+          <Dialog>
+            <DialogTrigger>오픈 다이얼로그</DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Title</DialogTitle>
+                <DialogDescription>Description</DialogDescription>
+              </DialogHeader>
+              <div>바디</div>
+            </DialogContent>
+          </Dialog>
+        </div>
         <div className={cn(isActive ? "text-green-500" : "text-red-500")}>
           isActive
         </div>
-
         <div className="text-primary">Primary</div>
         <div className="text-muted">Muted</div>
         <div className="text-destructive">Destructive</div>
