@@ -1,10 +1,10 @@
-import { toast } from "sonner";
 import "./App.css";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import { Toaster } from "./components/ui/sonner";
 import { Textarea } from "./components/ui/textarea";
 import { cn } from "./lib/utils";
+import { ChefHat } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -25,6 +25,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./components/ui/dialog";
+import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "./components/ui/alert-dialog";
 
 function App() {
   const isActive = true;
@@ -79,9 +91,11 @@ function App() {
         팝오버
         <div>
           <Popover>
-            {/* @ts-expect-error : 타입스크립트가 이상하게 잡아서 */}
-            <PopoverTrigger asChild>
-              <Button>Open</Button>
+            {/* <PopoverTrigger asChild> */}
+            <PopoverTrigger>
+              {/* <Button> */}
+              Open Popover
+              {/* </Button> */}
             </PopoverTrigger>
             <PopoverContent>content</PopoverContent>
           </Popover>
@@ -98,6 +112,38 @@ function App() {
               <div>바디</div>
             </DialogContent>
           </Dialog>
+        </div>
+        <div>
+          {/* shadcn 알럿 다이얼로그 */}
+          <AlertDialog>
+            <AlertDialogTrigger>오픈 알럿다이얼로그</AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Title</AlertDialogTitle>
+                <AlertDialogDescription>Description</AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogAction
+                  onClick={() => {
+                    console.log("action");
+                  }}
+                >
+                  Action
+                </AlertDialogAction>
+                <AlertDialogCancel
+                  onClick={() => {
+                    console.log("cancel");
+                  }}
+                >
+                  Cancel
+                </AlertDialogCancel>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+        <div>
+          {/*lucide icon */}
+          <ChefHat className="w-20 fill-red-500" />
         </div>
         <div className={cn(isActive ? "text-green-500" : "text-red-500")}>
           isActive
