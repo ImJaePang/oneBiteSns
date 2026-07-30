@@ -4,6 +4,7 @@ import IndexPage from "./pages/index-page";
 import SignInPage from "./pages/sign-in-page";
 import SignUpPage from "./pages/sing-up-page";
 import ShadCnPage from "./pages/shadCn-page";
+import CounterPage from "./pages/counter-page";
 
 function AuthLayout() {
   return (
@@ -19,6 +20,7 @@ function App() {
     <Routes>
       <Route path="/" element={<IndexPage />} />
       <Route path="/shadcn" element={<ShadCnPage />} />
+      <Route path="/counter" element={<CounterPage />} />
       <Route element={<AuthLayout />}>
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />

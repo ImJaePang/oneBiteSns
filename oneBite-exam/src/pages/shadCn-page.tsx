@@ -92,10 +92,8 @@ export default function ShadCnPage() {
         <div>
           <Popover>
             {/* <PopoverTrigger asChild> */}
-            <PopoverTrigger>
-              {/* <Button> */}
-              Open Popover
-              {/* </Button> */}
+            <PopoverTrigger asChild>
+              <Button>Open Popover</Button>
             </PopoverTrigger>
             <PopoverContent>content</PopoverContent>
           </Popover>
