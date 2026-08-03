@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
+import { immer } from "zustand/middleware/immer";
 
 // type Store = {
 //   count: number;
@@ -10,22 +11,30 @@ import { combine } from "zustand/middleware";
 // };
 
 export const useCounterStore = create(
-  combine({ count: 0 }, (set, get) => ({
-    actions: {
-      increaseOne: () => {
-        // const count = get().count;
-        // set({ count: count + 1 });
-        set((store) => ({
-          count: store.count + 1,
-        }));
+  immer(
+    combine({ count: 0 }, (set, get) => ({
+      actions: {
+        increaseOne: () => {
+          // const count = get().count;
+          // set({ count: count + 1 });
+          // set((store) => ({
+          //   count: store.count + 1,
+          // }));
+          set((state) => {
+            state.count += 1;
+          });
+        },
+        decreaseOne: () => {
+          // set((store) => ({
+          //   count: store.count - 1,
+          // }));
+          set((state) => {
+            state.count -= 1;
+          });
+        },
       },
-      decreaseOne: () => {
-        set((store) => ({
-          count: store.count - 1,
-        }));
-      },
-    },
-  })),
+    })),
+  ),
 );
 
 // state, action
