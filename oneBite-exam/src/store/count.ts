@@ -1,5 +1,11 @@
 import { create } from "zustand";
-import { combine } from "zustand/middleware";
+import {
+  combine,
+  subscribeWithSelector,
+  persist,
+  createJSONStorage,
+  devtools,
+} from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
 // type Store = {
@@ -11,30 +17,53 @@ import { immer } from "zustand/middleware/immer";
 // };
 
 export const useCounterStore = create(
-  immer(
-    combine({ count: 0 }, (set, get) => ({
-      actions: {
-        increaseOne: () => {
-          // const count = get().count;
-          // set({ count: count + 1 });
-          // set((store) => ({
-          //   count: store.count + 1,
-          // }));
-          set((state) => {
-            state.count += 1;
-          });
-        },
-        decreaseOne: () => {
-          // set((store) => ({
-          //   count: store.count - 1,
-          // }));
-          set((state) => {
-            state.count -= 1;
-          });
-        },
+  devtools(
+    persist(
+      subscribeWithSelector(
+        immer(
+          combine({ count: 0 }, (set, get) => ({
+            actions: {
+              increaseOne: () => {
+                // const count = get().count;
+                // set({ count: count + 1 });
+                // set((store) => ({
+                //   count: store.count + 1,
+                // }));
+                set((state) => {
+                  state.count += 1;
+                });
+              },
+              decreaseOne: () => {
+                // set((store) => ({
+                //   count: store.count - 1,
+                // }));
+                set((state) => {
+                  state.count -= 1;
+                });
+              },
+            },
+          })),
+        ),
+      ),
+      {
+        name: "countStore",
+        partialize: (state) => ({ count: state.count }), // persist할 state를 선택적으로 지정, 액션도 저장하면 문제되기 때문
+        storage: createJSONStorage(() => sessionStorage), // sessionStorage에 저장
       },
-    })),
+    ),
+    { name: "countStore" },
   ),
+);
+
+useCounterStore.subscribe(
+  (store) => store.count,
+  (count, preCount) => {
+    // 선택된 값이 변경될 때마다 실행하는 Listner
+    console.log("Count changed:", count, " ", preCount);
+
+    const store = useCounterStore.getState();
+    // useCounterStore.setState((store) => ({count}));
+  },
 );
 
 // state, action
