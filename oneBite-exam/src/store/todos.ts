@@ -36,4 +36,15 @@ const useTodoStore = create(
 
 export const useTodos = () => {
   const todos = useTodoStore((state) => state.todos);
+  return todos;
+};
+
+export const useCreteTodo = () => {
+  const createTodo = useTodoStore((state) => state.actions.createTodo);
+  return createTodo;
+};
+
+export const useDeleteTodo = () => {
+  const deleteTodo = useTodoStore((state) => state.actions.deleteTodo);
+  return deleteTodo;
 };
