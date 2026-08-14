@@ -18,5 +18,6 @@ export function useUpdateTodoMutaion() {
         );
       });
     },
+    onError: (error, variable, context) => {},
   });
 }
