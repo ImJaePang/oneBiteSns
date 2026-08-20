@@ -2,13 +2,23 @@
   "todos": [
     {
       "content": "아이고",
-      "isDone": true,
+      "isDone": false,
       "id": "8VvLrhWNmvM"
     },
     {
       "content": "저이고",
       "isDone": false,
       "id": "_NUhad3Xq8A"
+    },
+    {
+      "content": "한번도",
+      "isDone": false,
+      "id": "AnVfXoniyBE"
+    },
+    {
+      "content": "해볼까",
+      "isDone": false,
+      "id": "tXReIHV8viU"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
