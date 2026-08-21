@@ -22,7 +22,7 @@ export function useUpdateTodoMutaion() {
           if (!prevTodo) return;
           return {
             ...prevTodo,
-            ...updateTodo,
+            ...updatedTodo,
           };
         },
       );

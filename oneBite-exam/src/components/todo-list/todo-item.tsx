@@ -19,6 +19,7 @@ export default function TodoItem({ id }: { id: string }) {
     deleteTodo(id);
   };
   const handleCheckboxClick = () => {
+    // console.log(isDone);
     updatetodo({
       id,
       isDone: !isDone,

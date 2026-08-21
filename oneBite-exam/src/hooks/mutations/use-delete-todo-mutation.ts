@@ -12,10 +12,21 @@ export function useDeleteTodoMutation() {
 
     // 2. 수정 요청의 응답값을 활용 -> onSuccess
     onSuccess: (deletedTodo) => {
-      queryclient.setQueryData<Todo[]>(QUERY_KEYS.todo.list, (prevTodos) => {
-        if (!prevTodos) return [];
-        return prevTodos.filter((prevTodo) => prevTodo.id !== deletedTodo.id);
+      queryclient.removeQueries({
+        queryKey: QUERY_KEYS.todo.detail(deletedTodo.id),
       });
+
+      queryclient.setQueryData<string[]>(
+        QUERY_KEYS.todo.list,
+        (prevTodoIds) => {
+          if (!prevTodoIds) return [];
+          return prevTodoIds.filter((id) => id !== deletedTodo.id);
+        },
+      );
+      // queryclient.setQueryData<Todo[]>(QUERY_KEYS.todo.list, (prevTodos) => {
+      //   if (!prevTodos) return [];
+      //   return prevTodos.filter((prevTodo) => prevTodo.id !== deletedTodo.id);
+      // });
     },
 
     // 3. 낙관적 업데이트를 활용 -> onMutate
