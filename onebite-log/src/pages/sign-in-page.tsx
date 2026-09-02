@@ -6,17 +6,28 @@ import { Link } from "react-router";
 import githubLogo from "@/assets/github-mark.svg";
 import { useSignInWithOAuth } from "@/hooks/mutations/use-sign-in-with-oauth";
 import { toast } from "sonner";
+import { generateErrorMessage } from "@/lib/error";
 
 export default function SignInPage() {
-  const { mutate: signInWithPassword } = useSignInWithPassword({
-    onError: (error) => {
-      toast.error(error.message, {
-        position: "top-center",
-      });
-      setPassword("");
-    },
-  });
-  const { mutate: signInWithOAuth } = useSignInWithOAuth();
+  const { mutate: signInWithPassword, isPending: isSignInWithPasswordPending } =
+    useSignInWithPassword({
+      onError: (error) => {
+        const message = generateErrorMessage(error);
+        toast.error(message, {
+          position: "top-center",
+        });
+        setPassword("");
+      },
+    });
+  const { mutate: signInWithOAuth, isPending: isSignInWithOAuthPending } =
+    useSignInWithOAuth({
+      onError: (error) => {
+        const message = generateErrorMessage(error);
+        toast.error(message, {
+          position: "top-center",
+        });
+      },
+    });
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,6 +45,8 @@ export default function SignInPage() {
     signInWithOAuth("github");
   };
 
+  const isPending = isSignInWithPasswordPending || isSignInWithOAuthPending;
+
   return (
     <div className="flex flex-col gap-8">
       <div className="text-xl font-bold">로그인</div>
@@ -44,6 +57,7 @@ export default function SignInPage() {
           placeholder="exapmle@abc.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          disabled={isPending}
         />
         <Input
           className="py-6"
@@ -51,16 +65,22 @@ export default function SignInPage() {
           placeholder="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          disabled={isPending}
         />
       </div>
       <div className="flex flex-col gap-2">
-        <Button className="w-full" onClick={handleSignInWithPasswordClick}>
+        <Button
+          className="w-full"
+          onClick={handleSignInWithPasswordClick}
+          disabled={isPending}
+        >
           로그인
         </Button>
         <Button
           className="w-full"
           variant={"outline"}
           onClick={handleSignInWithGihubClick}
+          disabled={isPending}
         >
           <img src={githubLogo} className="h-4 w-4" />
           Github 계정으로 로그인
