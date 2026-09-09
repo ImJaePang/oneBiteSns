@@ -1,16 +1,39 @@
+import { useCreatePost } from "@/hooks/mutations/post/use-create-post";
+import { usePostEditorModal } from "@/store/post-editor-modal";
 import { ImageIcon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
-import { usePostEditorModal } from "@/store/post-editor-modal";
-import { useEffect, useRef, useState } from "react";
 
 export default function PostEditorModal() {
   const { isOpen, close } = usePostEditorModal();
+  const { mutate: createPost, isPending: isCreatePostPening } = useCreatePost({
+    onSucess: () => {
+      close();
+    },
+    onError: (error) => {
+      // const message = generateErrorMessage(error);
+      // toast.error(message, {
+      //   position: "top-center",
+      // });
+      toast.error("포지션 생성에 실패했습니다.", {
+        position: "top-center",
+      });
+    },
+  });
+
   const handleCloseModal = () => {
     close();
   };
   const [content, setContent] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleCreatePostClick = () => {
+    if (content.trim() === "") return;
+    createPost(content);
+  };
+
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
@@ -34,12 +57,23 @@ export default function PostEditorModal() {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           ref={textareaRef}
+          disabled={isCreatePostPening}
         />
-        <Button variant={"outline"} className="cursor-pointer">
+        <Button
+          variant={"outline"}
+          className="cursor-pointer"
+          disabled={isCreatePostPening}
+        >
           <ImageIcon />
           이미지 추가
         </Button>
-        <Button className="cursor-pointer">저장</Button>
+        <Button
+          onClick={handleCreatePostClick}
+          className="cursor-pointer"
+          disabled={isCreatePostPening}
+        >
+          저장
+        </Button>
       </DialogContent>
     </Dialog>
   );
