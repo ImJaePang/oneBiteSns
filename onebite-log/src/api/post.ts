@@ -26,24 +26,28 @@ export async function createPostWithImages({
   // 1. 이미지 없이 새로운 포스트 생성
   const post = await createPost(content);
 
-  // 2. 스토리지에 이미지 업로드
-  if (images.length === 0) return post;
-  const imageUrls = await Promise.all(
-    images.map((image) => {
-      const fileExtension = image.name.split(".").pop() || "webp";
-      const fileName = `${Date.now()}-${crypto.randomUUID()}.${fileExtension}`;
-      const filePath = `${userId}/${post.id}/${fileName}`;
-      return uploadImage({ file: image, filePath });
-    }),
-  );
+  try {
+    // 2. 스토리지에 이미지 업로드
+    if (images.length === 0) return post;
+    const imageUrls = await Promise.all(
+      images.map((image) => {
+        const fileExtension = image.name.split(".").pop() || "webp";
+        const fileName = `${Date.now()}-${crypto.randomUUID()}.${fileExtension}`;
+        const filePath = `${userId}/${post.id}/${fileName}`;
+        return uploadImage({ file: image, filePath });
+      }),
+    );
 
-  // 3. 포스트 테이블을 업데이트
-  const updatedPost = await updatePost({
-    id: post.id,
-    image_urls: imageUrls.map((imageUrl) => imageUrl.publicUrl),
-  });
-
-  return updatedPost;
+    // 3. 포스트 테이블을 업데이트
+    const updatedPost = await updatePost({
+      id: post.id,
+      image_urls: imageUrls.map((imageUrl) => imageUrl.publicUrl), // TODO 이 부분이 맞는건지?
+    });
+    return updatedPost;
+  } catch (error) {
+    await deletePost(post.id); // 에러시 삭제처리
+    throw error;
+  }
 }
 
 export async function updatePost(post: Partial<PostEntity> & { id: number }) {
