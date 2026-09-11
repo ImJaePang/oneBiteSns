@@ -28,7 +28,7 @@ export default function PostEditorModal() {
   });
 
   const handleCloseModal = () => {
-    close();
+    if (content !== "" || images.length !== 0) close();
   };
   const [content, setContent] = useState("");
   const [images, setImages] = useState<Image[]>([]);
