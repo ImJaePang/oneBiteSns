@@ -1,3 +1,4 @@
+import { useAlertModal } from "@/store/alert-modal";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,16 +11,32 @@ import {
 } from "../ui/alert-dialog";
 
 export default function AlertModal() {
+  const store = useAlertModal();
+  if (!store.isOpen) return null;
+  const handleCancelClick = () => {
+    if (store.onNegative) store.onNegative();
+    store.actions.close();
+  };
+
+  const handleActionClick = () => {
+    if (store.onPositive) store.onPositive();
+    store.actions.close();
+  };
+
   return (
-    <AlertDialog>
+    <AlertDialog open={store.isOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>헤더</AlertDialogTitle>
-          <AlertDialogDescription>설명</AlertDialogDescription>
+          <AlertDialogTitle>{store.title}</AlertDialogTitle>
+          <AlertDialogDescription>{store.description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>취소</AlertDialogCancel>
-          <AlertDialogAction>확인</AlertDialogAction>
+          <AlertDialogCancel onClick={handleCancelClick}>
+            취소
+          </AlertDialogCancel>
+          <AlertDialogAction onClick={handleActionClick}>
+            확인
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
