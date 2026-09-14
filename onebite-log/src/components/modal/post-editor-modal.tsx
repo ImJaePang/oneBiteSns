@@ -28,6 +28,30 @@ export default function PostEditorModal() {
       });
     },
   });
+  const [content, setContent] = useState("");
+  const [images, setImages] = useState<Image[]>([]);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height =
+        textareaRef.current.scrollHeight + "px";
+    }
+  }, [content]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      images.forEach((image) => {
+        URL.revokeObjectURL(image.previewUrl); // 메모리 최적화
+      });
+      return;
+    }
+    textareaRef.current?.focus();
+    setContent("");
+    setImages([]);
+  }, [isOpen]);
 
   const handleCloseModal = () => {
     if (content !== "" || images.length !== 0) {
@@ -43,10 +67,6 @@ export default function PostEditorModal() {
     }
     close();
   };
-  const [content, setContent] = useState("");
-  const [images, setImages] = useState<Image[]>([]);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleCreatePostClick = () => {
     if (content.trim() === "") return;
@@ -75,22 +95,10 @@ export default function PostEditorModal() {
     setImages((prevImages) =>
       prevImages.filter((item) => item.previewUrl !== image.previewUrl),
     );
+
+    URL.revokeObjectURL(image.previewUrl);
   };
 
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height =
-        textareaRef.current.scrollHeight + "px";
-    }
-  }, [content]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    textareaRef.current?.focus();
-    setContent("");
-    setImages([]);
-  }, [isOpen]);
   return (
     <Dialog open={isOpen} onOpenChange={handleCloseModal}>
       <DialogContent className="max-h-[90vh]">
