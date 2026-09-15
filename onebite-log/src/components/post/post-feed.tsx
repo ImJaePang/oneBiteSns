@@ -1,3 +1,19 @@
+import { usePostData } from "@/hooks/queries/use-post-data";
+import FallBack from "../fallback";
+import Loader from "../loader";
+import PostItem from "./post-item";
+
 export default function PostFeed() {
-  return <div>feed</div>;
+  const { data, error, isPending } = usePostData();
+  // return <FallBack />;
+  // return <Loader />;
+  if (error) return <FallBack />;
+  if (isPending) return <Loader />;
+  return (
+    <div className="flex flex-col gap-10">
+      {data.map((post) => (
+        <PostItem key={post.id} {...post} />
+      ))}
+    </div>
+  );
 }

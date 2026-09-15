@@ -5,7 +5,7 @@ import type { PostEntity } from "@/types";
 export async function fetchPosts() {
   const { data, error } = await supabase
     .from("post")
-    .select("*")
+    .select("*, author: profile!author_id (*)")
     .order("created_at", { ascending: false });
 
   if (error) throw error;
