@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import { useSession } from "@/store/session";
 import { useOpenAlertModal } from "@/store/alert-modal";
+import { useUpdatePost } from "@/hooks/mutations/post/use-update-post";
 
 type Image = {
   file: File;
@@ -24,6 +25,17 @@ export default function PostEditorModal() {
     },
     onError: (error) => {
       toast.error("포지션 생성에 실패했습니다.", {
+        position: "top-center",
+      });
+    },
+  });
+
+  const { mutate: updatePost, isPending: isUpdatePostPending } = useUpdatePost({
+    onSucess: () => {
+      postEditorModal.action.close();
+    },
+    onError: (error) => {
+      toast.error("포스트 수정에 실패했습니다", {
         position: "top-center",
       });
     },
@@ -73,13 +85,22 @@ export default function PostEditorModal() {
     postEditorModal.action.close();
   };
 
-  const handleCreatePostClick = () => {
+  const handleSavePostClick = () => {
     if (content.trim() === "") return;
-    createPost({
-      content,
-      images: images.map((image) => image.file),
-      userId: session!.user.id,
-    });
+    if (!postEditorModal.isOpen) return;
+    if (postEditorModal.type === "CREATE") {
+      createPost({
+        content,
+        images: images.map((image) => image.file),
+        userId: session!.user.id,
+      });
+    } else {
+      if (content === postEditorModal.content) return;
+      updatePost({
+        id: postEditorModal.postId,
+        content: content,
+      });
+    }
   };
 
   const handleSelectImages = (e: ChangeEvent<HTMLInputElement>) => {
@@ -104,6 +125,8 @@ export default function PostEditorModal() {
     URL.revokeObjectURL(image.previewUrl);
   };
 
+  const isPening = isCreatePostPening || isUpdatePostPending;
+
   return (
     <Dialog open={postEditorModal.isOpen} onOpenChange={handleCloseModal}>
       <DialogContent className="max-h-[90vh]">
@@ -114,7 +137,7 @@ export default function PostEditorModal() {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           ref={textareaRef}
-          disabled={isCreatePostPening}
+          disabled={isPening}
         />
         <input
           onChange={handleSelectImages}
@@ -164,21 +187,23 @@ export default function PostEditorModal() {
             </CarouselContent>
           </Carousel>
         )}
+        {postEditorModal.isOpen && postEditorModal.type === "CREATE" && (
+          <Button
+            onClick={() => {
+              fileInputRef.current?.click();
+            }}
+            variant={"outline"}
+            className="cursor-pointer"
+            disabled={isPening}
+          >
+            <ImageIcon />
+            이미지 추가
+          </Button>
+        )}
         <Button
-          onClick={() => {
-            fileInputRef.current?.click();
-          }}
-          variant={"outline"}
+          onClick={handleSavePostClick}
           className="cursor-pointer"
-          disabled={isCreatePostPening}
-        >
-          <ImageIcon />
-          이미지 추가
-        </Button>
-        <Button
-          onClick={handleCreatePostClick}
-          className="cursor-pointer"
-          disabled={isCreatePostPening}
+          disabled={isPening}
         >
           저장
         </Button>
