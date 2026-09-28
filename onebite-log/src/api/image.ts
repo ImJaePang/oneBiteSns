@@ -1,7 +1,8 @@
 import { BUCKET_NAME } from "@/lib/constants";
 import supabase from "@/lib/supabase";
+import { Bubbles } from "lucide-react";
 
-export default async function uploadImage({
+export async function uploadImage({
   file,
   filePath,
 }: {
@@ -17,4 +18,15 @@ export default async function uploadImage({
     .from(BUCKET_NAME)
     .getPublicUrl(data.path);
   return publicUrl;
+}
+
+export async function deleteImagesInPath(path:string){
+  const {data : files, error :fetchFilesError} = await supabase.storage.from(BUCKET_NAME).list(path);
+  if (fetchFilesError) throw fetchFilesError;
+  const {error : removeError} = await supabase.storage.from(BUCKET_NAME).remove(
+    files.map((file) => `${path}/${file.name}`)
+  );
+
+  if(removeError) throw removeError;
+
 }
