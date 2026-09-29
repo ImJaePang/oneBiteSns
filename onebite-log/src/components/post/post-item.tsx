@@ -10,11 +10,23 @@ import { HeartIcon, MessageCircle } from "lucide-react";
 import DeletePostButton from "./delete-post-button";
 import EditPostButton from "./edit-post-button";
 import { useSession } from "@/store/session";
+import { usePostByIdData } from "@/hooks/queries/use-post-by-id";
+import Loader from "../loader";
+import FallBack from "../fallback";
 
-export default function PostItem(post: Post) {
+export default function PostItem({postId}: {postId : number}) {
 
   const session = useSession();
   const userId = session?.user.id;
+
+  const {data : post, isPending, error} = usePostByIdData({
+    postId,
+    type : "FEED"
+  });
+
+  if(isPending) return <Loader/>
+  if (error) return <FallBack/>
+
   const isMine = post.author_id === userId;
 
   return (
