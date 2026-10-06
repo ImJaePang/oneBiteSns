@@ -1,5 +1,5 @@
 import supabase from "@/lib/supabase";
-import {uploadImage} from "./image";
+import { uploadImage } from "./image";
 import type { PostEntity } from "@/types";
 
 export async function fetchPosts({ from, to }: { from: number; to: number }) {
@@ -13,14 +13,14 @@ export async function fetchPosts({ from, to }: { from: number; to: number }) {
   return data;
 }
 
-export async function fetchPostById(postId : number) {
-  const {data, error} = await supabase
-  .from("post")
-  .select("*, author: profile!author_id (*)")
-  .eq("id", postId)
-  .single();
+export async function fetchPostById(postId: number) {
+  const { data, error } = await supabase
+    .from("post")
+    .select("*, author: profile!author_id (*)")
+    .eq("id", postId)
+    .single();
 
-  if(error) throw error;
+  if (error) throw error;
   return data;
 }
 
@@ -90,6 +90,22 @@ export async function deletePost(id: number) {
     .eq("id", id)
     .select()
     .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function togglePostLike({
+  postId,
+  userId,
+}: {
+  postId: number;
+  userId: string;
+}) {
+  const { data, error } = await supabase.rpc("toggle_post_like", {
+    p_post_id: postId,
+    p_user_id: userId,
+  });
+
   if (error) throw error;
   return data;
 }

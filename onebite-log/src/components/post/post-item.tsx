@@ -4,28 +4,31 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import { usePostByIdData } from "@/hooks/queries/use-post-by-id";
 import { formatTimeAgo } from "@/lib/time";
-import type { Post } from "@/types";
+import { useSession } from "@/store/session";
 import { HeartIcon, MessageCircle } from "lucide-react";
+import FallBack from "../fallback";
+import Loader from "../loader";
 import DeletePostButton from "./delete-post-button";
 import EditPostButton from "./edit-post-button";
-import { useSession } from "@/store/session";
-import { usePostByIdData } from "@/hooks/queries/use-post-by-id";
-import Loader from "../loader";
-import FallBack from "../fallback";
+import LikePostButton from "./like-post-button";
 
-export default function PostItem({postId}: {postId : number}) {
-
+export default function PostItem({ postId }: { postId: number }) {
   const session = useSession();
   const userId = session?.user.id;
 
-  const {data : post, isPending, error} = usePostByIdData({
+  const {
+    data: post,
+    isPending,
+    error,
+  } = usePostByIdData({
     postId,
-    type : "FEED"
+    type: "FEED",
   });
 
-  if(isPending) return <Loader/>
-  if (error) return <FallBack/>
+  if (isPending) return <Loader />;
+  if (error) return <FallBack />;
 
   const isMine = post.author_id === userId;
 
@@ -53,11 +56,12 @@ export default function PostItem({postId}: {postId : number}) {
 
         {/* 1-2. 수정/삭제 버튼 */}
         <div className="text-muted-foreground flex text-sm">
-          {isMine && <>
-            <EditPostButton {...post} />
-            <DeletePostButton id={post.id} />
-          </>
-          }
+          {isMine && (
+            <>
+              <EditPostButton {...post} />
+              <DeletePostButton id={post.id} />
+            </>
+          )}
         </div>
       </div>
 
@@ -88,10 +92,7 @@ export default function PostItem({postId}: {postId : number}) {
       {/* 3. 좋아요, 댓글 버튼 */}
       <div className="flex gap-2">
         {/* 3-1. 좋아요 버튼 */}
-        <div className="hover:bg-muted flex cursor-pointer items-center gap-2 rounded-xl border-1 p-2 px-4 text-sm">
-          <HeartIcon className="h-4 w-4" />
-          <span>0</span>
-        </div>
+        <LikePostButton id={post.id} likeCount={post.like_count} />
 
         {/* 3-2. 댓글 버튼 */}
         <div className="hover:bg-muted flex cursor-pointer items-center gap-2 rounded-xl border-1 p-2 px-4 text-sm">
