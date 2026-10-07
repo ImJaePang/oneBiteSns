@@ -1,10 +1,9 @@
-import { usePostData } from "@/hooks/queries/use-post-data";
+import { useInfinitePostsData } from "@/hooks/queries/use-infinite-posts-data";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import FallBack from "../fallback";
 import Loader from "../loader";
 import PostItem from "./post-item";
-import { useInfinitePostsData } from "@/hooks/queries/use-infinite-posts-data";
 
 export default function PostFeed() {
   // const { data, error, isPending } = usePostData();
