@@ -10,6 +10,8 @@ export type Post = PostEntity & { author: ProfileEntity } & {
   isLiked: boolean;
 };
 
+export type Comment = CommentEntity & { author: ProfileEntity };
+
 export type UseMutationCallback = {
   onSucess?: () => void;
   onError?: (errror: Error) => void;
