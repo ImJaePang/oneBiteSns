@@ -1,5 +1,3 @@
-import type { PostEntity } from "@/types";
-import { Store } from "lucide-react";
 import { create } from "zustand";
 import { combine, devtools } from "zustand/middleware";
 
