@@ -92,7 +92,7 @@ export async function createPostWithImages({
     // 3. 포스트 테이블을 업데이트
     const updatedPost = await updatePost({
       id: post.id,
-      image_urls: imageUrls.map((imageUrl) => imageUrl.publicUrl), // TODO 이 부분이 맞는건지?
+      image_urls: imageUrls.map((imageUrl) => imageUrl),
     });
     return updatedPost;
   } catch (error) {
