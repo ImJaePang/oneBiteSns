@@ -16,7 +16,6 @@ export default function CommentItem(props: Comment) {
   const [isEditing, setIsEditing] = useState(false);
   const { mutate: deleteComment, isPending: isDeleteCommentPending } =
     useDeleteComment({
-      onSucess: () => {},
       onError: (error) => {
         toast.error("댓글 삭제에 실패했습니다.", { position: "top-center" });
       },
