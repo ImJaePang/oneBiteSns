@@ -8,3 +8,6 @@ https://github.com/onebite-hands-on-sns
 
 들은 강의
 인프런 : 한 입 크기로 잘라먹는 React.js 실전 프로젝트 - SNS 편
+
+기능 추가를 한다면?
+알림기능, 팔로우기능, 채팅기능, 에러모니터링기능(센트리.io), 테스트코드, 
